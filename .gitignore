@@ -1,0 +1,26 @@
+# Eclipse
+.classpath
+.project
+.wtpmodules
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Dependencies
+lib/
+
+# New Relic
+logs/
+config/plugin.json
+config/newrelic.json
