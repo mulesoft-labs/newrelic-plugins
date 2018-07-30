@@ -38,46 +38,51 @@ public class JolokiaProbe implements ApplicationProbe<JolokiaResult> {
     private final Map<Long, List<JMXRequest>> requestsByGroup = new TreeMap<>();
 
     public JolokiaProbe(AgentProperties properties) {
-        this.jolokiaClient = createJolokiaClient(properties);
+        try {
+            this.jolokiaClient = createJolokiaClient(properties);
 
-        List<AgentProperties.JMXMetric> jmxMetrics = properties.getMetrics();
+            List<AgentProperties.JMXMetric> jmxMetrics = properties.getMetrics();
 
-        Map<String, J4pRequest> jolokiaRequests = new HashMap<>();
+            Map<String, J4pRequest> jolokiaRequests = new HashMap<>();
 
-        for (AgentProperties.JMXMetric jmxMetric : jmxMetrics) {
-            String requestIdentifier = jmxMetric.getObjectName() + "[" + jmxMetric.getAttributeName() + "]" + "[" + jmxMetric.getGroupNumber() + "]";
+            for (AgentProperties.JMXMetric jmxMetric : jmxMetrics) {
+                String requestIdentifier = jmxMetric.getObjectName() + "[" + jmxMetric.getAttributeName() + "]" + "[" + jmxMetric.getGroupNumber() + "]";
 
-            try {
-                J4pRequest jolokiaRequest = jmxMetric.hasAttribute() ? new J4pReadRequest(jmxMetric.getObjectName(), jmxMetric.getAttributeName()) : new J4pReadRequest(jmxMetric.getObjectName());
+                try {
+                    J4pRequest jolokiaRequest = jmxMetric.hasAttribute() ? new J4pReadRequest(jmxMetric.getObjectName(), jmxMetric.getAttributeName()) : new J4pReadRequest(jmxMetric.getObjectName());
 
-                jolokiaRequests.put(requestIdentifier, jolokiaRequest);
-            } catch (MalformedObjectNameException e) {
-                logger.error(e, "Error creating metric, please validate object name and attribute name [", jmxMetric.getObjectName(), ", ", jmxMetric.getAttributeName(), "]");
+                    jolokiaRequests.put(requestIdentifier, jolokiaRequest);
+                } catch (MalformedObjectNameException e) {
+                    logger.error(e, "Error creating metric, please validate object name and attribute name [", jmxMetric.getObjectName(), ", ", jmxMetric.getAttributeName(), "]");
+                }
             }
-        }
 
-        for (Map.Entry<String, J4pRequest> entry : jolokiaRequests.entrySet()) {
-            String requestIdentifier = entry.getKey();
-            Matcher matcher = REQUEST_IDENTIFIER_PATTER.matcher(requestIdentifier);
-            if (matcher.matches()) {
-                String objectName = matcher.group("objectName");
-                String attributeName = Strings.nullToEmpty(matcher.group("attributeName"));
-                Long groupNumber = Long.valueOf(matcher.group("groupNumber"));
+            for (Map.Entry<String, J4pRequest> entry : jolokiaRequests.entrySet()) {
+                String requestIdentifier = entry.getKey();
+                Matcher matcher = REQUEST_IDENTIFIER_PATTER.matcher(requestIdentifier);
+                if (matcher.matches()) {
+                    String objectName = matcher.group("objectName");
+                    String attributeName = Strings.nullToEmpty(matcher.group("attributeName"));
+                    Long groupNumber = Long.valueOf(matcher.group("groupNumber"));
 
-                List<MetricData> metricData = buildMetricExpressions(jmxMetrics, objectName, attributeName, groupNumber);
+                    List<MetricData> metricData = buildMetricExpressions(jmxMetrics, objectName, attributeName, groupNumber);
 
-                requestsByGroup.compute(groupNumber, (k, v) -> {
-                    if (v == null) {
-                        v = new ArrayList<>();
-                    }
+                    requestsByGroup.compute(groupNumber, (k, v) -> {
+                        if (v == null) {
+                            v = new ArrayList<>();
+                        }
 
-                    v.add(new JMXRequest(entry.getValue(), metricData));
+                        v.add(new JMXRequest(entry.getValue(), metricData));
 
-                    return v;
-                });
-            } else {
-                logger.error("Request Identifier does not match, please review it");
+                        return v;
+                    });
+                } else {
+                    logger.error("Request Identifier does not match, please review it");
+                }
             }
+        } catch (Exception e) {
+            logger.error(e, "Error creating JolokiaProbe");
+            throw e;
         }
     }
 
