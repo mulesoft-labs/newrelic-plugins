@@ -17,18 +17,18 @@ public class ActiveMQArtemisAgent extends Agent implements NewRelicAgent {
 
     private static final Logger logger = Logger.getLogger(ActiveMQArtemisAgent.class);
 
-    private static final String GUID = "org.mule.newrelic.plugins.artemis";
-    private static final String VERSION = "1.0.0";
+    public static final String GUID = "org.mule.newrelic.plugins.artemis";
+    public static final String VERSION = "1.0.0";
 
     private final String name;
     private final List<Poller> pollers;
 
-    public ActiveMQArtemisAgent(String name) {
-        super(GUID, VERSION);
+    public ActiveMQArtemisAgent(String name, String pluginName, String pluginVersion) {
+        super(pluginName, pluginVersion);
 
         logger.info("Agent/Instance Name: ", name);
-        logger.info("GUID: ", GUID);
-        logger.info("Version: ", VERSION);
+        logger.info("GUID: ", pluginName);
+        logger.info("Version: ", pluginVersion);
 
         checkArgument(!Strings.isNullOrEmpty(name));
 

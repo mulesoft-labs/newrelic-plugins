@@ -71,6 +71,18 @@ If you prefer to be more involved in the maintaince of the process, consider one
 
 == Configuration Information
 
+=== Custom Dashboard
+
+* You *MUST* start the plugin using two system properties -Dplugin.name="organization.here" and -Dplugin.version="version.here", in order to setup custom dashboards and summary metrics.
+
+_If you do not set these properties the default will be used, then it will appear with a default dashboard, which can't be edited and won't be presenting your JMX counters._
+
+* Once you set your own plugin name and it reports in as a new plugin, you'll need to create dashboards and summary metrics to expose your Jolokia metrics. The New Relic Docs offer the best explanation of these capabilities
+
+** https://docs.newrelic.com/docs/plugins/developing-plugins/structuring-your-plugin/changing-plugin-settings[Changing plugin settings]
+** https://docs.newrelic.com/docs/plugins/developing-plugins/structuring-your-plugin/creating-summary-metrics-plugins[Creating summary metrics for plugins]
+** https://docs.newrelic.com/docs/plugins/developing-plugins/structuring-your-plugin/working-plugin-dashboards[Working with plugin dashboards]
+
 === Configuration Files
 
 You will need to modify two configuration files in order to set this plugin up to run. The first (```newrelic.json```) contains configurations used by all Platform plugins (e.g. license key, logging information, proxy settings) and can be shared across your plugins. The second (```plugin.json```) contains data specific to each plugin such as a list of hosts and port combination for what you are monitoring. Templates for both of these files should be located in the '```config```' directory in your extracted plugin folder.

@@ -21,7 +21,10 @@ public class ActiveMQArtemisAgentFactory extends AgentFactory {
         AgentProperties properties = AgentProperties.parse(pluginProperties);
         logger.info("Creating agent using: ", properties);
 
-        ActiveMQArtemisAgent agent = new ActiveMQArtemisAgent(properties.getName());
+        String pluginName = System.getProperty("plugin.name") != null ? System.getProperty("plugin.name") : ActiveMQArtemisAgent.GUID;
+        String pluginVersion = System.getProperty("plugin.version") != null ? System.getProperty("plugin.version") : ActiveMQArtemisAgent.VERSION;
+
+        ActiveMQArtemisAgent agent = new ActiveMQArtemisAgent(properties.getName(), pluginName, pluginVersion);
         registerProbes(properties, agent);
         return agent;
     }
