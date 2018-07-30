@@ -25,6 +25,10 @@ public class ApplicationResponse<T> {
         return result;
     }
 
+    public Throwable getError() {
+        return error;
+    }
+
     public boolean isError() {
         return error != null;
     }

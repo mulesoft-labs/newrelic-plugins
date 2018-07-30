@@ -24,7 +24,7 @@ public class JolokiaReporter implements NewRelicReporter<JolokiaResult> {
     public void report(ApplicationResponse<JolokiaResult> response) {
         Stopwatch sw = Stopwatch.createStarted();
         if (response.isError()) {
-            logger.error(response.getResult(), " response is an error");
+            logger.error(response.getError(), " response is an error");
             return;
         }
 

@@ -121,10 +121,13 @@ public class JolokiaProbe implements ApplicationProbe<JolokiaResult> {
                     }
                 }
             } catch (J4pException e) {
-                logger.error(e, "Error executing bulk request after: ", sw.elapsed(TimeUnit.MILLISECONDS));
+                logger.error("Error executing bulk request after: ", sw.elapsed(TimeUnit.MILLISECONDS));
                 return ApplicationResponse.of(e);
             } catch (ParseException e) {
-                logger.error(e, "Error parsing string to number after: ", sw.elapsed(TimeUnit.MILLISECONDS));
+                logger.error("Error parsing string to number after: ", sw.elapsed(TimeUnit.MILLISECONDS));
+                return ApplicationResponse.of(e);
+            } catch (Exception e) {
+                logger.error("Error while executing probe after: ", sw.elapsed(TimeUnit.MILLISECONDS));
                 return ApplicationResponse.of(e);
             }
         }
