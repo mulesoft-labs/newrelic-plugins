@@ -1,0 +1,33 @@
+{
+  "_comments": {
+    "agents": "Create one entry per jolokia server instance to be monitored",
+    "name": "Optional: Jolokia server instance name to display within New Relic dashboard UI (defaults to 'host')",
+    "protocol": "Optional: The protocol for the http request (defaults to 'http')",
+    "host": "Required: The host/ip of the jolokia server instance to be monitored",
+    "port": "Optional: The port for the http request (defaults to 8161)",
+    "path": "Optional: Use to specify a non-standard admin url path (such as when serving multiple dropwizard applications from the same host/port). For example, if set to '/myApp', health checks would be made using '/myApp/healthcheck'",
+
+    "metrics": "Create one entry per metric",
+    "group_number": "Optional: Group number to join jolokia queries and execute a bulk query to increase performance (defaults to 1)",
+    "metric_name": "Required: Metric Name",
+    "units": "Unit used to measure this metric",
+    "object_name": "Required: MBean Name",
+    "attribute_name": "Optional: Attribute Name",
+    "jq_expression": "Required: JQ Expression to extract single/summarize value from response"
+  },
+  "agents": [
+    {
+      "host": "localhost",
+      "metrics": [
+        {
+          "group_number": 1,
+          "metric_name": "JVM/Threads/Count",
+          "units": "threads",
+          "object_name": "java.lang:type=Threading",
+          "attribute_name": "ThreadCount",
+          "jq_expression": ".value"
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activemq-artemis-plugin</module>
+        <module>jolokia-plugin</module>
     </modules>
 
     <build>
