@@ -141,7 +141,10 @@ public class JolokiaProbe implements ApplicationProbe<JolokiaResult> {
     }
 
     private J4pClient createJolokiaClient(AgentProperties properties) {
-        return new J4pClient(properties.getProtocol() + "://" + properties.getHost() + ":" + properties.getPort() + "/" + properties.getPath() + "/");
+        return J4pClient.url(properties.getProtocol() + "://" + properties.getHost() + ":" + properties.getPort() + "/" + properties.getPath() + "/")
+                .user(properties.getUser())
+                .password(properties.getPassword())
+                .build();
     }
 
     private List<MetricData> buildMetricExpressions(List<AgentProperties.JMXMetric> jmxMetrics, String objectName, String attributeName, Long groupNumber) {
