@@ -6,6 +6,7 @@ import com.arakelian.jq.JqResponse;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Strings;
 import com.newrelic.metrics.publish.util.Logger;
+import org.jolokia.client.BasicAuthenticator;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.exception.J4pException;
 import org.jolokia.client.request.J4pReadRequest;
@@ -141,7 +142,11 @@ public class JolokiaProbe implements ApplicationProbe<JolokiaResult> {
     }
 
     private J4pClient createJolokiaClient(AgentProperties properties) {
-        return new J4pClient(properties.getProtocol() + "://" + properties.getHost() + ":" + properties.getPort() + "/" + properties.getPath() + "/");
+        return J4pClient.url(properties.getProtocol() + "://" + properties.getHost() + ":" + properties.getPort() + "/" + properties.getPath() + "/")
+                .user(properties.getUser())
+                .password(properties.getPassword())
+                .authenticator(new BasicAuthenticator().preemptive())
+                .build();
     }
 
     private List<MetricData> buildMetricExpressions(List<AgentProperties.JMXMetric> jmxMetrics, String objectName, String attributeName, Long groupNumber) {

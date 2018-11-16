@@ -47,7 +47,7 @@ public class AgentProperties {
     }
 
     public String getPath() {
-        if (properties.containsKey("port")) {
+        if (properties.containsKey("path")) {
             return Strings.nullToEmpty((String) properties.get("path"));
         } else {
             return "jolokia";
@@ -74,6 +74,22 @@ public class AgentProperties {
             }
         }
         return jmxMetrics;
+    }
+
+    public String getUser() {
+        if (properties.containsKey("user")) {
+            return Strings.nullToEmpty((String) properties.get("user"));
+        } else {
+            return null;
+        }
+    }
+
+    public String getPassword() {
+        if (properties.containsKey("password")) {
+            return Strings.nullToEmpty((String) properties.get("password"));
+        } else {
+            return null;
+        }
     }
 
     @Override
