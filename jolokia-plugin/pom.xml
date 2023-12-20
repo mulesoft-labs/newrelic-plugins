@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-client-java</artifactId>
-            <version>2.0.0-M3</version>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -89,8 +89,7 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Specification-Title>New Relic Jolokia Plugin</Specification-Title>
                                         <Specification-Vendor>MuleSoft Inc.</Specification-Vendor>
@@ -103,8 +102,7 @@
                                         <Main-Class>org.mule.newrelic.plugins.jolokia.Main</Main-Class>
                                     </manifestEntries>
                                 </transformer>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>
                     </execution>
